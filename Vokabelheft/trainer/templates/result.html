@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if request.session.result == True %}
+<div class="container">
+  <h3 class="text-success">True</h3>
+</div>
+{% else %}
+<div class="container">
+  <h3 class="text-danger">False</h3>
+</div>
+{% endif %}
+<div class="container">
+  <table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Иностранное слово</th>
+        <th scope="col">{{ request.session.question.0 }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% if request.session.lang == '1' %}
+            <th scope="row">Фонетика</th>
+        {% else %}
+            <th scope="row">Артикль</th>
+        {% endif %}
+        <td>{{ request.session.question.1 }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Перевод</th>
+        <td>{{ request.session.question.2 }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Часть речи</th>
+        <td>{{ request.session.question.5 }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Множественное число</th>
+        <td>{{ request.session.question.4 }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Форма глагола</th>
+        <td>{{ request.session.question.3 }}</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<div class="container">
+    <div class="d-grid gap-2 d-md-block">
+        {% if request.session.trening_keys %}
+        <a class="btn btn-primary" href="{% url 'get_answer' %}" role="button">Следущее</a>
+        {% else %}
+        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Следущее</a>
+        {% endif %}
+        <a class="btn btn-primary" href="{% url 'total_results' %}" role="button">Стоп</a>
+    </div>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Тренировка</b></li>
+{% endblock %}

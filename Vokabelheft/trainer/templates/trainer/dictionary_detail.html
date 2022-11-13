@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if request.session.lang == '1' %}
+    <h3>{{ user.username }}: Английско-русский словарь</h3>
+{% else %}
+    <h3>{{ user.username }}: Немецко-русский словарь</h3>
+{% endif %}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Иностранное слово</th>
+        <th scope="col">{{ dictionary.key }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% if request.session.lang == '1' %}
+            <th scope="row">Фонетика</th>
+        {% else %}
+            <th scope="row">Артикль</th>
+        {% endif %}
+        <td>{{ dictionary.keyfonetic }}</td>
+    </tr>
+        <tr>
+        <th scope="row">Перевод</th>
+        <td>{{ dictionary.word }}</td>
+    </tr>
+        <tr>
+        <th scope="row">Часть речи</th>
+        <td>{{ dictionary.part }}</td>
+    </tr>
+        <tr>
+        <th scope="row">Множественное число</th>
+        <td>{{ dictionary.plural }}</td>
+    </tr>
+        <tr>
+        <th scope="row">Форма глагола</th>
+        <td>{{ dictionary.form }}</td>
+    </tr>
+        <tr>
+        <th scope="row">Создано</th>
+        <td>{{ dictionary.time_created }}</td>
+    </tr>
+        <tr>
+        <th scope="row">Обновлено</th>
+        <td>{{ dictionary.time_updated }}</td>
+    </tr>
+    </tbody>
+</table>
+<div class="container">
+    <div class="d-grid gap-2 d-md-block">
+        {% if request.session.lang == '1' %}
+        <a class="btn btn-primary" href="/dictionaryeng/update/{{ dictionary.id }}" role="button">Изменить</a>
+        {% else %}
+        <a class="btn btn-primary" href="/dictionaryde/update/{{ dictionary.id }}" role="button">Изменить</a>
+        {% endif %}
+        <a class="btn btn-primary" href="/dictionary/delete/{{ dictionary.id }}" role="button">Удалить</a>
+    </div>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Детальный просмотр</b></li>
+{% endblock %}

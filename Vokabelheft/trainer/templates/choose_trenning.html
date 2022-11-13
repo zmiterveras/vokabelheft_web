@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <form action="{% url 'choose_trenning' %}" method="POST">
+  <h3>Выберите режим тренировки</h3>
+    {% csrf_token %}
+    <div>{{ form.as_p }}</div>
+      <br>
+      <input type="submit" value="Выбрать">
+  </form>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Выбор тренировки</b></li>
+{% endblock %}
+
+<!--<div class="btn-group" role="group" aria-label="">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio1">Случайный выбор</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio2">Последние 20</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio3">Последние 40</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnradio4">Постранично</label>
+  </div>
+    <div>-->

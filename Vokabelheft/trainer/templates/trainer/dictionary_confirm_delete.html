@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h4>Удаление слова</h4>
+  <p>{{ user.username }}, Вы уверены, что хотите удалить слово: {{ dictionary }}</p>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <input class="btn btn-primary" type="submit" value="Да, удалить" />
+  </form>
+</div>
+{% endblock %}

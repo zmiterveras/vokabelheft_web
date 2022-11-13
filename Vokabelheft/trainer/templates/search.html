@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <form action="" method="POST">
+  {% if request.session.lang == '1' %}
+    <h3>Введите слово для поиска в: Английско-русском словаре</h3>
+{% else %}
+    <h3>Введите слово для поиска в: Немецко-русском словаре</h3>
+{% endif %}
+    {% csrf_token %}
+    <div>{{ form.as_p }}</div>
+      <br>
+      <input type="submit" value="Искать">
+  </form>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Поиск слова</b></li>
+{% endblock %}

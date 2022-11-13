@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content%}
+<div class="container">
+  <form action="" method="post">
+    {% csrf_token %}
+    <table class="table">
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Сохранить">
+  </form>
+</div>
+<br>
+
+<div class="container">
+{% if request.session.lang == '1' %}
+  <p>Фонетические знаки:</p>
+  <ul class="list-group list-group-horizontal">
+    {% for x in request.session.fonetic %}
+    <li class="list-group-item">{{ x }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Умляуты:</p>
+  <ul class="list-group list-group-horizontal">
+    {% for x in request.session.umlaut %}
+    <li class="list-group-item">{{ x }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Добавление(изменение) слова</b></li>
+{% endblock %}

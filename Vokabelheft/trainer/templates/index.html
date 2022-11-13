@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block activehome %}active{% endblock %}
+{% block content%}
+<div class="text-center px-4 g-3">
+    <h3 class="text-center">Добро пожаловать в Vokabelheft</h3>
+
+    <p class="text-center p-3">Vokabelheft - ваш помощник в изучении иностранного языка.
+    Vokabelheft является аналогом словарной тетради и помогает вам накапливать и тренировать словарный запас.
+    На данный момент приложение позволяет изучать английский и немецкий языки.</p>
+</div>
+{% if user.is_authenticated %}
+    <div>
+        <p class="text-center p-3">Привет, {{ user.username }}</p>
+        <p class="text-center p-3">{{ user.username }}, выбирите словарь для работы.</p>
+        <div class="d-grid gap-2 d-md-block">
+            <a class="btn btn-primary" href="{% url 'dictionary_list' '1' %}" role="button">Eng</a>
+            <a class="btn btn-primary" href="{% url 'dictionary_list' '2' %}" role="button">De</a>
+        </div>
+
+
+    </div>
+{% else %}
+    <div>
+        <p class="text-center p-3">Чтобы начать работать с приложением войдите или зарегестрируйтесь</p>
+        <a class="btn btn-primary" href="{% url 'login' %}" role="button">Войти | Зарегистрироваться</a>
+    </div>
+{% endif %}
+{% endblock %}
+

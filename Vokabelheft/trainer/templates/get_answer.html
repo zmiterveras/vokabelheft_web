@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <p>Перевидите слово: <b>{{ request.session.question.2 }}</b></p>
+  <form action="{% url 'get_answer' %}" method="POST">
+  <h5>Введите ответ:</h5>
+    {% csrf_token %}
+    <div>{{ form.as_p }}</div>
+      <br>
+      <input type="submit" value="Ok">
+  </form>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Тренировка</b></li>
+{% endblock %}
+{% block trening %}
+<li class="nav-item">Правильных ответов: <b>{{ request.session.amount_true}}</b></li>
+<li class="nav-item">Задано вопросов: <b>{{ request.session.amount_answer }}</b></li>
+{% endblock %}

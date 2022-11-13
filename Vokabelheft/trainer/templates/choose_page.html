@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <form action="{% url 'choose_page' %}" method="GET">
+  <h3>Выберите страницу для тренировки:</h3>
+    {% csrf_token %}
+    <div>{{ form.as_p }}</div>
+      <br>
+      <input type="submit" value="Выбрать">
+  </form>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Выбор страницы тренировки</b></li>
+{% endblock %}

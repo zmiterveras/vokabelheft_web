@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+
+{% block search %}
+        <a class="nav-link" href="{% url 'search' %}"><i class="bi bi-search"></i> Поиск</a>
+{% endblock %}
+
+{% block content %}
+{% if request.session.lang == '1' %}
+    <h3>{{ user.username }}: Английско-русский словарь</h3>
+{% else %}
+    <h3>{{ user.username }}: Немецко-русский словарь</h3>
+{% endif %}
+{% if dictionary_list %}
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Иностранное слово</th>
+        <th scope="col">Фонетика</th>
+        <th scope="col">Перевод</th>
+        <th scope="col">Формы глагола</th>
+        <th scope="col">Множественное число</th>
+        <th scope="col">Часть речи</th>
+        <th scope="col">Добавлено</th>
+        <th scope="col">Обновлено</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for note in dictionary_list %}
+    <tr>
+        <th scope="row"></th>
+        <td><a href="{{ note.get_absolute_url }}">{{ note.key }}</a></td>
+        <td>{{ note.keyfonetic }}</td>
+        <td>{{ note.word }}</td>
+        <td>{{ note.form }}</td>
+        <td>{{ note.plural }}</td>
+        <td>{{ note.part }}</td>
+        <td>{{ note.time_created }}</td>
+        <td>{{ note.time_updated }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="container">
+    <div class="d-grid gap-2 d-md-block">
+        <a class="btn btn-primary" href="{% url 'dictionary_create' %}" role="button">Добавить слово</a>
+        <a class="btn btn-primary" href="{% url 'choose_trenning' %}" role="button">Тренировка</a>
+    </div>
+</div>
+{% else %}
+<div class="container">
+    <p class="text-center p-3">Данный словарь пуст</p>
+    <p class="text-center p-3">Чтобы добавить слово в словарь, нажмите кнопку ниже</p>
+    <a class="btn btn-primary" href="{% url 'dictionary_create' %}" role="button">Добавить слово</a>
+</div>
+{% endif %}
+{% endblock %}
+{% block wordcount %}
+{% if request.session.dict_count %}
+<li class="nav-item">Количество слов: <b>{{ request.session.dict_count }}</b></li>
+{% endif %}
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Просмотр</b></li>
+{% endblock %}

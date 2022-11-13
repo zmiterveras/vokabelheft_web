@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <table class="table">
+    <tbody>
+    <tr>
+      <th scope="row">Задано вопросов:</th>
+      <td>{{ request.session.amount_answer }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Получено правильных ответов:</th>
+        <td class="text-success">{{ request.session.amount_true }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Получено неправильных ответов:</th>
+        <td class="text-danger">{{ request.session.amount_false }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Затрачено времени:</th>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<div class="container">
+    <div class="d-grid gap-2 d-md-block">
+        {% if request.session.lang == '1' %}
+        <a class="btn btn-primary" href="{% url 'dictionary_list' '1' %}" role="button">К словарю</a>
+        {% else %}
+        <a class="btn btn-primary" href="{% url 'dictionary_list' '2' %}" role="button">К словарю</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Результат тренировки</b></li>
+{% endblock %}
