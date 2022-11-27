@@ -1,9 +1,19 @@
 {% extends "base.html" %}
 
-
-{% block search %}
-        <a class="nav-link" href="{% url 'search' %}"><i class="bi bi-search"></i> Поиск</a>
+{% block activeeng %}
+    {% if request.session.lang == '1' %}
+        active
+    {% endif %}
 {% endblock %}
+
+{% block activede %}
+    {% if request.session.lang == '2' %}
+        active
+    {% endif %}
+{% endblock %}
+
+
+
 
 {% block content %}
 {% if request.session.lang == '1' %}

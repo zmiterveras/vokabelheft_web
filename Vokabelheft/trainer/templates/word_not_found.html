@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h3>Слово <b class="text-danger">{{ request.session.search_word }}</b> отсутствует в словаре</h3>
+</div>
+{% endblock %}
+{% block mode %}
+<li class="nav-item">Режим: <b>Поиск</b></li>
+{% endblock %}

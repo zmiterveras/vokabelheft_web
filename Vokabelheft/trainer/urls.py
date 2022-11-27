@@ -22,5 +22,7 @@ urlpatterns = [
     path('result', views.Result.as_view(), name='result'),
     path('total_results', views.TotalResults.as_view(), name='total_results'),
     path('search', views.SearchWords.as_view(), name='search'),
+    path('word_not_found', views.WordNotFound.as_view(), name='word_not_found'),
+    path('about', views.About.as_view(), name='about'),
 
 ]

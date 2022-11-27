@@ -18,12 +18,15 @@
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'home' %}">Vokabelheft</a>
+                <a class="navbar-brand" href="{% url 'home' %}"><i class="bi bi-book"></i> Vokabelheft</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link {% block activehome %}{% endblock %}" href="{% url 'home' %}">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block activeabout %}{% endblock %}" href="{% url 'about' %}">О приложении</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -34,43 +37,45 @@
                     </li>
                     <li class="nav-item"></li>
                     <li class="nav-item">
-                        {% block search %}{% endblock %}
+                        {% if request.session.lang %}
+                        <a class="nav-link {% block activesearch %}{% endblock %}" href="{% url 'search' %}"><i class="bi bi-search"></i> Поиск</a>
+                        {% endif %}
                     </li>
                 </ul>
-
                 <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-person-fill"></i> <b>{{ user.username }}</b> | Logout</a>
                 {% else %}
-                <a class="nav-link"  href="{% url 'login' %}">Login | Register</a>
+                <a class="nav-link" href="{% url 'login' %}">Login | Register</a>
                 {% endif %}
             </div>
         </div>
     </nav>
-    <br><br>
     <div class="container text-center">
         <div class="row align-items-center">
-            <div class="col-2 bg-light">
-                <ul class="nav flex-column">
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <div class="p-3">Ползователь: <b>{{ user.username }}</b></div></li>
-                    {% block wordcount %}{% endblock %}
-                    {% block mode %}{% endblock %}
-                    {% block trening %}{% endblock %}
-                    <li class="nav-item">Заглушка Юзер</li>
-                    {% else %}
-                    <li class="nav-item">
-                        <div class="p-3">Ползователь: <b>Анонимус!</b></div></li>
-                    <li class="nav-item"><div class="p-3">Заглушка Анонимус</div></li>
-                    <li class="nav-item"><div class="p-3">Заглушка Анонимус</div></li>
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="col-10">
-                {% block content %}{% endblock %}
-            </div>
+            <table class="table">
+                <tr>
+                    <td class="col-2 bg-light">
+                        <ul class="nav flex-column">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <div class="p-3">Ползователь: <b>{{ user.username }}</b></div></li>
+                                {% block wordcount %}{% endblock %}
+                                {% block mode %}{% endblock %}
+                                {% block trening %}{% endblock %}
+                        {% else %}
+                            <li class="nav-item">
+                                <div class="p-3">Ползователь: <b>Анонимус!</b></div></li>
+                        {% endif %}
+                        </ul>
+                    </td>
+                    <td class="col-10">
+                        {% block content %}{% endblock %}
+                    </td>
+
+                </tr>
+            </table>
+
         </div>
     </div>
-    <br>
     <div class="container">
     {% block pagination %}
         {% if is_paginated %}
@@ -92,8 +97,6 @@
         {% endif %}
     {% endblock %}
     </div>
-
-    <br><br>
     <footer>
         <div class="container bg-light">
             <p class="text-center">&copy; All rights reserved, 2022</p>

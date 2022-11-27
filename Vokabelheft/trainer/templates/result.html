@@ -4,10 +4,12 @@
 {% if request.session.result == True %}
 <div class="container">
   <h3 class="text-success">True</h3>
+  <h5><ins>{{ request.session.answer }}</ins></h5>
 </div>
 {% else %}
 <div class="container">
   <h3 class="text-danger">False</h3>
+  <h5><del>{{ request.session.answer }}</del></h5>
 </div>
 {% endif %}
 <div class="container">

@@ -44,6 +44,10 @@ class Index(generic.TemplateView):
     template_name = "index.html"
 
 
+class About(generic.TemplateView):
+    template_name = "about.html"
+
+
 class ChooseTrenning(generic.TemplateView):
     form_class = ChooseTrenningForm
     template_name = "choose_trenning.html"
@@ -121,6 +125,7 @@ class GetAnswer(generic.TemplateView):
         amount_false = request.session.get('amount_false', 0)
         if form.is_valid():
             answer = self.request.POST.get('answer', None)
+            request.session['answer'] = answer
             request.session['amount_answer'] = amount_answer + 1
             if answer == self.request.session['question'][0]:
                 self.request.session['result'] = True
@@ -159,12 +164,16 @@ class SearchWords(generic.TemplateView):
             search = self.request.POST.get('search', None)
             word = Dictionary.objects.filter(user=self.request.user).filter(language__exact=self.request.session['lang']).filter(key__exact=search).values()
             if word:
-                print('REsult of searcing:\n', word[0]['id'])
                 return redirect('dictionary_detail/' + str(word[0]['id']))
             else:
-                return redirect('home')
+                self.request.session['search_word'] = search
+                return redirect('word_not_found')
         else:
             return redirect('home')
+
+
+class WordNotFound(generic.TemplateView):
+    template_name = 'word_not_found.html'
 
 
 def logout_user(request):
@@ -201,10 +210,8 @@ class DictionaryListView(LoginRequiredMixin, generic.ListView):
             language = self.kwargs['lang']
             self.request.session['lang'] = language
         self.request.session['dict_count'] = Dictionary.objects.filter(user=self.request.user).filter(language__exact=language).count()
-        # time_dict = Dictionary.objects.filter(user=self.request.user).filter(language__exact=language).values()
-        # time_dict = serializers.serialize("json", Dictionary.objects.filter(user=self.request.user).filter(language__exact=language),
-        #                                   fields=("key", "keyfonetic", "word", "form", "plural", "part"))
         self.request.session['dictionary'] = my_serializer(Dictionary.objects.filter(user=self.request.user).filter(language__exact=language))
+        print("Язык: ", self.request.session['lang'])
         return Dictionary.objects.filter(user=self.request.user).filter(language__exact=language)
 
 
