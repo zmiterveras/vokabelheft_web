@@ -1,4 +1,5 @@
 import random
+import time
 
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -82,6 +83,7 @@ class ChooseTrenning(generic.TemplateView):
                     self.request.session['trening_keys'] = trening_keys
             else:
                 return redirect('choose_page')
+            self.request.session['start_time'] = time.time()
             return redirect('get_answer')
         return redirect('home')
 
@@ -148,6 +150,15 @@ class Result(generic.TemplateView):
 
 class TotalResults(generic.TemplateView):
     template_name = 'total_results.html'
+
+    def get(self, request, *args, **kwargs):
+        seconds = int(time.time() - self.request.session['start_time'])
+        minutes = '0'
+        if seconds > 60:
+            minutes = seconds // 60
+            seconds = seconds % 60
+        trenning_time = "%s %s %s %s" % (minutes, 'минут', seconds, 'секунд')
+        return render(request, 'total_results.html', context={'trenning_time': trenning_time})
 
 
 class SearchWords(generic.TemplateView):

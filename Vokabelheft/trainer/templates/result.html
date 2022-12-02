@@ -53,7 +53,7 @@
         {% if request.session.trening_keys %}
         <a class="btn btn-primary" href="{% url 'get_answer' %}" role="button">Следущее</a>
         {% else %}
-        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Следущее</a>
+        <a class="btn btn-primary" href="{% url 'total_results' %}" role="button">Следущее</a>
         {% endif %}
         <a class="btn btn-primary" href="{% url 'total_results' %}" role="button">Стоп</a>
     </div>
