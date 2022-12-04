@@ -25,9 +25,6 @@
                     <li class="nav-item">
                         <a class="nav-link {% block activehome %}{% endblock %}" href="{% url 'home' %}">Главная</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% block activeabout %}{% endblock %}" href="{% url 'about' %}">О приложении</a>
-                    </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link {% block activeeng %}{% endblock %}" href="{% url 'dictionary_list' '1' %}">Английский</a>
@@ -41,7 +38,12 @@
                         <a class="nav-link {% block activesearch %}{% endblock %}" href="{% url 'search' %}"><i class="bi bi-search"></i> Поиск</a>
                         {% endif %}
                     </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link {% block activeabout %}{% endblock %}" href="{% url 'about' %}">О приложении</a>
+                    </li>
                 </ul>
+                {% if user.is_authenticated %}
                 <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-person-fill"></i> <b>{{ user.username }}</b> | Logout</a>
                 {% else %}
                 <a class="nav-link" href="{% url 'login' %}">Login | Register</a>
