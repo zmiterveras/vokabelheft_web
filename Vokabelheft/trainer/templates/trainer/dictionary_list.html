@@ -22,10 +22,9 @@
     <h3>{{ user.username }}: Немецко-русский словарь</h3>
 {% endif %}
 {% if dictionary_list %}
-<table class="table">
+<table class="table table-hover table-bordered">
     <thead>
     <tr>
-        <th scope="col">#</th>
         <th scope="col">Иностранное слово</th>
         <th scope="col">Фонетика</th>
         <th scope="col">Перевод</th>
@@ -39,7 +38,6 @@
     <tbody>
     {% for note in dictionary_list %}
     <tr>
-        <th scope="row"></th>
         <td><a href="{{ note.get_absolute_url }}">{{ note.key }}</a></td>
         <td>{{ note.keyfonetic }}</td>
         <td>{{ note.word }}</td>

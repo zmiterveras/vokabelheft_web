@@ -87,9 +87,11 @@
                         <li class="page-item"><a class="page-link" href="?page=1">&laquo; Первая</a></li>
                         <li class="page-item">_</li>
                         <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">предыдущая</a></li>
+                        <li class="page-item">_</li>
                     {% endif %}
                     <li class="page-item disabled"><a class="page-link" href="#">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.</a></li>
                     {% if page_obj.has_next %}
+                        <li class="page-item">_</li>
                         <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">следущая</a></li>
                         <li class="page-item">_</li>
                         <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">последняя &raquo;</a></li>

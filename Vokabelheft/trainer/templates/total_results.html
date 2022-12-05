@@ -30,7 +30,7 @@
         {% else %}
         <a class="btn btn-primary" href="{% url 'dictionary_list' '2' %}" role="button">К словарю</a>
         {% endif %}
-        <a class="btn btn-primary" href="" role="button">Получить результат в PDF</a>
+        <a class="btn btn-primary" href="{% url 'result_pdf' %}" role="button">Получить результат в PDF</a>
     </div>
 </div>
 {% endblock %}

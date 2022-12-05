@@ -9,7 +9,7 @@ class DictionariesAdmin(admin.ModelAdmin):
 
 @admin.register(Parts)
 class PartsAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('id', 'name',)
 
 
 @admin.register(Dictionary)

@@ -24,5 +24,6 @@ urlpatterns = [
     path('search', views.SearchWords.as_view(), name='search'),
     path('word_not_found', views.WordNotFound.as_view(), name='word_not_found'),
     path('about', views.About.as_view(), name='about'),
+    path('result_pdf', views.result_pdf, name='result_pdf'),
 
 ]

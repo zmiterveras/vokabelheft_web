@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import random
 import time
+import io
 
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +11,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import CreateView
-from django.core import serializers
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
 
 from .forms import *
 from .models import Dictionary, Dictionaries
@@ -39,6 +44,27 @@ def get_question(request):
     request.session['trening_keys'] = keys
     question = request.session['dictionary'][id]
     return question
+
+def result_pdf(request):
+    buffer= io.BytesIO()
+    can = canvas.Canvas(buffer, bottomup=0)
+    textobj = can.beginText()
+    textobj.setTextOrigin(inch, inch)
+    textobj.setFont('Helvetica', 14)
+    lines = [
+        "Data: " + time.asctime(),
+        "Set Question: " + str(request.session['amount_answer']),
+        "Get true answers: " + str(request.session['amount_true']),
+        "Get false answers: " + str(request.session['amount_false']),
+    ]
+    for line in lines:
+        textobj.textLine(line)
+
+    can.drawText(textobj)
+    can.showPage()
+    can.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='result.pdf')
 
 
 class Index(generic.TemplateView):
@@ -212,7 +238,7 @@ class RegisterUser(CreateView):
 
 
 class DictionaryListView(LoginRequiredMixin, generic.ListView):
-    paginate_by = 10
+    paginate_by = 40
 
     def get_queryset(self):
         if not self.kwargs.get('lang'): # для пути без аргументов из добавления нового слова
