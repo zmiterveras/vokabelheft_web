@@ -16,6 +16,7 @@ urlpatterns = [
     path('dictionaryeng/update/<int:pk>', views.DictionaryEngUpdate.as_view(), name='dictionaryeng_update'),
     path('dictionaryde/update/<int:pk>', views.DictionaryDeUpdate.as_view(), name='dictionaryde_update'),
     path('dictionary/delete/<int:pk>', views.DictionaryDelete.as_view(), name='dictionary_delete'),
+    path('choose_trenning/<str:card>', views.ChooseTrenning.as_view(), name='choose_trenning'),
     path('choose_trenning', views.ChooseTrenning.as_view(), name='choose_trenning'),
     path('choose_page', views.ChoosePage.as_view(), name='choose_page'),
     path('get_answer', views.GetAnswer.as_view(), name='get_answer'),
@@ -25,5 +26,6 @@ urlpatterns = [
     path('word_not_found', views.WordNotFound.as_view(), name='word_not_found'),
     path('about', views.About.as_view(), name='about'),
     path('result_pdf', views.result_pdf, name='result_pdf'),
+    path('cards', views.Cards.as_view(), name='cards'),
 
 ]

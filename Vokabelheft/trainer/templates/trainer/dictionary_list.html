@@ -54,6 +54,7 @@
     <div class="d-grid gap-2 d-md-block">
         <a class="btn btn-primary" href="{% url 'dictionary_create' %}" role="button">Добавить слово</a>
         <a class="btn btn-primary" href="{% url 'choose_trenning' %}" role="button">Тренировка</a>
+        <a class="btn btn-primary" href="{% url 'choose_trenning' 'card' %}" role="button">Карточки</a>
     </div>
 </div>
 {% else %}

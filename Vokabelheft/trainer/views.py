@@ -81,9 +81,13 @@ class ChooseTrenning(generic.TemplateView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        self.request.session['amount_answer'] = 0
-        self.request.session['amount_true'] = 0
-        self.request.session['amount_false'] = 0
+        if not self.kwargs.get('card'): # для пути без аргументов из добавления нового слова
+            self.request.session['amount_answer'] = 0
+            self.request.session['amount_true'] = 0
+            self.request.session['amount_false'] = 0
+            self.request.session['card'] = False
+        else:
+            self.request.session['card'] = True
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -96,21 +100,20 @@ class ChooseTrenning(generic.TemplateView):
             if form.cleaned_data['choose_trenning'] == '1':
                 pass
             elif form.cleaned_data['choose_trenning'] == '2':
-                if self.request.session['dict_count'] < 20:
-                    pass
-                else:
-                      trening_keys = trening_keys[-20:]
-                      self.request.session['trening_keys'] = trening_keys
+                if self.request.session['dict_count'] > 20:
+                    trening_keys = trening_keys[-20:]
+                    self.request.session['trening_keys'] = trening_keys
             elif form.cleaned_data['choose_trenning'] == '3':
-                if self.request.session['dict_count'] < 40:
-                    pass
-                else:
+                if self.request.session['dict_count'] > 40:
                     trening_keys = trening_keys[-40:]
                     self.request.session['trening_keys'] = trening_keys
             else:
                 return redirect('choose_page')
             self.request.session['start_time'] = time.time()
-            return redirect('get_answer')
+            if not self.request.session['card']:
+                return redirect('get_answer')
+            else:
+                return redirect('cards')
         return redirect('home')
 
 
@@ -128,7 +131,10 @@ class ChoosePage(generic.TemplateView):
             trening_keys.sort(key=int)
             trening_keys = trening_keys[start:start+40]
             self.request.session['trening_keys'] = trening_keys
-            return redirect('get_answer')
+            if not self.request.session['card']:
+                return redirect('get_answer')
+            else:
+                return redirect('cards')
         return render(request, self.template_name, {'form': form})
 
 
@@ -193,6 +199,10 @@ class TotalResults(generic.TemplateView):
         return render(request, 'total_results.html', context={'trenning_time': trenning_time, 'estimate': estimate})
 
 
+class Cards(generic.TemplateView):
+    template_name = 'cards.html'
+
+
 class SearchWords(generic.TemplateView):
     template_name = 'search.html'
     form_class = SearchForm
@@ -253,6 +263,7 @@ class DictionaryListView(LoginRequiredMixin, generic.ListView):
             language = self.kwargs['lang']
             self.request.session['lang'] = language
         self.request.session['dict_count'] = Dictionary.objects.filter(user=self.request.user).filter(language__exact=language).count()
+        # возможно стоит перенести в ChooseTrenning?
         self.request.session['dictionary'] = my_serializer(Dictionary.objects.filter(user=self.request.user).filter(language__exact=language))
         print("Язык: ", self.request.session['lang'])
         return Dictionary.objects.filter(user=self.request.user).filter(language__exact=language)
