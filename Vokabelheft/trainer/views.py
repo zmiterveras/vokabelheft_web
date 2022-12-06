@@ -184,7 +184,13 @@ class TotalResults(generic.TemplateView):
             minutes = seconds // 60
             seconds = seconds % 60
         trenning_time = "%s %s %s %s" % (minutes, 'минут', seconds, 'секунд')
-        return render(request, 'total_results.html', context={'trenning_time': trenning_time})
+        if self.request.session['amount_true'] >= 0.8 * self.request.session['amount_answer']:
+            estimate = 3
+        elif self.request.session['amount_true'] < 0.4 * self.request.session['amount_answer']:
+            estimate = 1
+        else:
+            estimate = 2
+        return render(request, 'total_results.html', context={'trenning_time': trenning_time, 'estimate': estimate})
 
 
 class SearchWords(generic.TemplateView):

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container">
@@ -22,6 +23,18 @@
     </tr>
     </tbody>
 </table>
+</div>
+<div class="container p-3">
+    {% if estimate  == 3 %}
+    <p class="p-3">Хорошая работа!!!</p>
+    <img src="{% static 'trainer/images/super148.png' %}">
+    {% elif estimate == 2 %}
+    <p class="p-3">Нужно поднажать)</p>
+    <img src="{% static 'trainer/images/bad148.png' %}">
+    {% else %}
+    <p class="p-3">Это никуда не годится(</p>
+    <img src="{% static 'trainer/images/worse148.png' %}">
+    {% endif %}
 </div>
 <div class="container">
     <div class="d-grid gap-2 d-md-block">
