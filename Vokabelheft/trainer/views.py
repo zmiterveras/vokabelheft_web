@@ -14,6 +14,8 @@ from django.views.generic import CreateView
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 from .forms import *
 from .models import Dictionary, Dictionaries
@@ -48,14 +50,16 @@ def get_question(request):
 def result_pdf(request):
     buffer= io.BytesIO()
     can = canvas.Canvas(buffer, bottomup=0)
+    pdfmetrics.registerFont(TTFont('FreeSans', 'FreeSans.ttf'))
     textobj = can.beginText()
     textobj.setTextOrigin(inch, inch)
-    textobj.setFont('Helvetica', 14)
+    # textobj.setFont('Helvetica', 14)
+    textobj.setFont('FreeSans', 14)
     lines = [
-        "Data: " + time.asctime(),
-        "Set Question: " + str(request.session['amount_answer']),
-        "Get true answers: " + str(request.session['amount_true']),
-        "Get false answers: " + str(request.session['amount_false']),
+        "Дата: " + time.asctime(),
+        "Задано вопросов: " + str(request.session['amount_answer']),
+        "Получеоно правильных ответов: " + str(request.session['amount_true']),
+        "Получено неправильных ответов: " + str(request.session['amount_false']),
     ]
     for line in lines:
         textobj.textLine(line)
@@ -132,6 +136,7 @@ class ChoosePage(generic.TemplateView):
             trening_keys = trening_keys[start:start+40]
             self.request.session['trening_keys'] = trening_keys
             if not self.request.session['card']:
+                self.request.session['start_time'] = time.time()
                 return redirect('get_answer')
             else:
                 return redirect('cards')
