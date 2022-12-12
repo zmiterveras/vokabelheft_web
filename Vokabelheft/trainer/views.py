@@ -152,8 +152,6 @@ class GetAnswer(generic.TemplateView):
             redirect('total_results')
         question = get_question(self.request)
         self.request.session['question'] = question
-        # self.request.session['key'] = question[0]
-        # self.request.session['word'] = question[2]
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
 
@@ -206,6 +204,14 @@ class TotalResults(generic.TemplateView):
 
 class Cards(generic.TemplateView):
     template_name = 'cards.html'
+
+    def get(self, request, *args, **kwargs):
+        if not self.request.session['trening_keys']:
+            redirect('dictionary_list')
+        question = get_question(self.request)
+        context = {'key': question[0], 'word': question[2], 'dict': self.request.session['lang']}
+        return render(request, self.template_name, context=context)
+
 
 
 class SearchWords(generic.TemplateView):

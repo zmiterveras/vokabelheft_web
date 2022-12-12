@@ -1,10 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container">
-<h3 class="text-danger">В разработке</h3>
+<div class="container" id="card">
+    <h3 class="text-danger">В разработке</h3>
+    <p class="key">{{ key }}</p>
+    <p class="word">{{ word }}</p>
+</div>
+<div class="card">
+    <div class="card-header">
+    Карточка
+    </div>
+    <div class="card-body">
+        <p id="key"></p>
+        <p id="word"></p>
+    </div>
+    <div class="card-footer">
+    Чтобы перевернуть карточку кликните по слову
+    </div>
+</div>
+<div class="container py-4">
+    <div class="d-grid gap-2 d-md-block">
+        <a class="btn btn-primary" href="{% url 'cards' %}" role="button">Следущее</a>
+        <a class="btn btn-primary" href="{% url 'dictionary_list' dict %}" role="button">Стоп</a>
+    </div>
 </div>
 {% endblock %}
 {% block mode %}
 <li class="nav-item">Режим: <b>Просмотр карточек</b></li>
+{% endblock %}
+{% block jsscripts %}
+<script src="{% static 'trainer/js/jquery-3.6.1.min.js' %}"></script>
+<script src="{% static 'trainer/js/card.js' %}"></script>
 {% endblock %}
