@@ -7,6 +7,7 @@ import io
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -112,6 +113,9 @@ class ChooseTrenning(generic.TemplateView):
                     trening_keys = trening_keys[-40:]
                     self.request.session['trening_keys'] = trening_keys
             else:
+                if self.request.session['dict_count'] < 40:
+                    messages.warning(request, "Недостаточно слов для постраничного режима")
+                    return redirect('choose_trenning')
                 return redirect('choose_page')
             self.request.session['start_time'] = time.time()
             if not self.request.session['card']:

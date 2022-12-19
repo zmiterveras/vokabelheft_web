@@ -2,6 +2,13 @@
 
 {% block content %}
 <div class="container">
+  <div>
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags %}<script>alert("{{ message }}");</script>{% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
   <form action="{% url 'choose_trenning' %}" method="POST">
   <h3>Выберите режим тренировки</h3>
     {% csrf_token %}
