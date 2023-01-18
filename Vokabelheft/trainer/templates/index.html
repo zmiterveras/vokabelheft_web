@@ -14,8 +14,8 @@
         <p class="text-center p-3">Привет, {{ user.username }} </p>
         <p class="text-center p-3">{{ user.username }}, выбирите словарь для работы.</p>
         <div class="d-grid gap-2 d-md-block">
-            <a class="btn btn-primary" href="{% url 'dictionary_list' '1' %}" role="button">Eng</a>
-            <a class="btn btn-primary" href="{% url 'dictionary_list' '2' %}" role="button">De</a>
+            <a class="btn btn-primary" href="{% url 'dictionary_list' 'eng' %}" role="button">Eng</a>
+            <a class="btn btn-primary" href="{% url 'dictionary_list' 'de' %}" role="button">De</a>
         </div>
 
 

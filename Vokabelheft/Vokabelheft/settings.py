@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'trainer.apps.TrainerConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

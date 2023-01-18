@@ -27,5 +27,7 @@ urlpatterns = [
     path('about', views.About.as_view(), name='about'),
     path('result_pdf', views.result_pdf, name='result_pdf'),
     path('cards', views.Cards.as_view(), name='cards'),
+    path('profile', views.UserProfileView.as_view(), name='profile'),
+    path('api/v1/dictionarylist/', views.DictionaryAPIView.as_view()),
 
 ]

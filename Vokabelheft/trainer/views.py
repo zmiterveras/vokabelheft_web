@@ -11,15 +11,17 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import CreateView
+# from django.views.generic import CreateView
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from rest_framework import generics
 
 from .forms import *
 from .models import Dictionary, Dictionaries
+from .serializers import DictionarySerializer
 
 
 # def index(request):
@@ -257,7 +259,7 @@ class LoginUser(LoginView):
         return reverse_lazy("home")
 
 
-class RegisterUser(CreateView):
+class RegisterUser(generic.CreateView):
     form_class = RegisterUserForm
     template_name = "register.html"
     success_url = reverse_lazy("login")
@@ -275,7 +277,10 @@ class DictionaryListView(LoginRequiredMixin, generic.ListView):
         if not self.kwargs.get('lang'): # для пути без аргументов из добавления нового слова
             language = self.request.session['lang']
         else:
-            language = self.kwargs['lang']
+            if self.kwargs['lang'] == 'eng':
+                language = '1'
+            else:
+                language = '2'
             self.request.session['lang'] = language
         self.request.session['dict_count'] = Dictionary.objects.filter(user=self.request.user).filter(language__exact=language).count()
         # возможно стоит перенести в ChooseTrenning?
@@ -335,6 +340,19 @@ class DictionaryDeUpdate(LoginRequiredMixin, generic.UpdateView):
 class DictionaryDelete(LoginRequiredMixin, generic.DeleteView):
     model = Dictionary
     success_url = reverse_lazy('dictionary_list')
+
+class UserProfileView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'user_profile.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {'name': self.request.user}
+        return render(request, self.template_name, context=context)
+
+
+class DictionaryAPIView(generics.ListAPIView):
+    queryset = Dictionary.objects.all()
+    serializer_class = DictionarySerializer
+
 
 
 
