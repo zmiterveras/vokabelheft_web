@@ -6,4 +6,4 @@ from .models import Dictionary
 class DictionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Dictionary
-        fields = ('key', 'word')
+        fields = "__all__"

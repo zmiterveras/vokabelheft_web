@@ -17,7 +17,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from rest_framework import generics
+from rest_framework import generics, viewsets
 
 from .forms import *
 from .models import Dictionary, Dictionaries
@@ -349,7 +349,7 @@ class UserProfileView(LoginRequiredMixin, generic.TemplateView):
         return render(request, self.template_name, context=context)
 
 
-class DictionaryAPIView(generics.ListAPIView):
+class DictionaryAPIViewSet(viewsets.ModelViewSet):
     queryset = Dictionary.objects.all()
     serializer_class = DictionarySerializer
 
