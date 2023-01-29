@@ -33,5 +33,7 @@ urlpatterns = [
     path('result_pdf', views.result_pdf, name='result_pdf'),
     path('cards', views.Cards.as_view(), name='cards'),
     path('profile', views.UserProfileView.as_view(), name='profile'),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
     path('api/v1/', include(router.urls)),
+    path('api/v1/dictionary_count/', views.DictionaryCountAPIView.as_view()),
 ]

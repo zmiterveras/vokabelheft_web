@@ -17,7 +17,9 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, views
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from .forms import *
 from .models import Dictionary, Dictionaries
@@ -282,7 +284,7 @@ class DictionaryListView(LoginRequiredMixin, generic.ListView):
             else:
                 language = '2'
             self.request.session['lang'] = language
-        self.request.session['dict_count'] = Dictionary.objects.filter(user=self.request.user).filter(language__exact=language).count()
+        self.request.session['dict_count'] = c
         # возможно стоит перенести в ChooseTrenning?
         self.request.session['dictionary'] = my_serializer(Dictionary.objects.filter(user=self.request.user).filter(language__exact=language))
         print("Язык: ", self.request.session['lang'])
@@ -352,6 +354,20 @@ class UserProfileView(LoginRequiredMixin, generic.TemplateView):
 class DictionaryAPIViewSet(viewsets.ModelViewSet):
     queryset = Dictionary.objects.all()
     serializer_class = DictionarySerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Dictionary.objects.filter(user=self.request.user)
+
+class DictionaryCountAPIView(views.APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        eng_count =Dictionary.objects.filter(user=self.request.user).filter(language__exact='1').count()
+        de_count = Dictionary.objects.filter(user=self.request.user).filter(language__exact='2').count()
+        user = str(self.request.user)
+        return Response({'User': user, 'DictionaryEng': eng_count, 'DictionaryDe': de_count})
+
 
 
 
