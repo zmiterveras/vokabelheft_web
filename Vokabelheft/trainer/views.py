@@ -63,7 +63,7 @@ def result_pdf(request):
     lines = [
         "Дата: " + time.asctime(),
         "Задано вопросов: " + str(request.session['amount_answer']),
-        "Получеоно правильных ответов: " + str(request.session['amount_true']),
+        "Получено правильных ответов: " + str(request.session['amount_true']),
         "Получено неправильных ответов: " + str(request.session['amount_false']),
     ]
     for line in lines:
@@ -217,7 +217,12 @@ class Cards(generic.TemplateView):
         if not self.request.session['trening_keys']:
             redirect('dictionary_list')
         question = get_question(self.request)
-        context = {'key': question[0], 'word': question[2], 'dict': self.request.session['lang']}
+        match self.request.session['lang']:
+            case '1':
+                dict = 'eng'
+            case '2':
+                dict = 'de'
+        context = {'key': question[0], 'word': question[2], 'dict': dict}
         return render(request, self.template_name, context=context)
 
 
@@ -266,10 +271,21 @@ class RegisterUser(generic.CreateView):
     template_name = "register.html"
     success_url = reverse_lazy("login")
 
-    def form_validate(self, form):
-        user = form.save()
-        login(self.request, user)
-        return redirect('home')
+    # def form_validate(self, form):
+    #     user = form.save()
+    #     login(self.request, user)
+    #     return redirect('home')
+
+class ChangeUser(LoginRequiredMixin, generic.UpdateView):
+    model = User
+    form_class = ChangeUserData
+    template_name = "change_user.html"
+    success_url = reverse_lazy("profile")
+
+    # def form_validate(self, form):
+    #     user = form.save()
+    #     # login(self.request, user)
+    #     return redirect('home')
 
 
 class DictionaryListView(LoginRequiredMixin, generic.ListView):
@@ -284,7 +300,7 @@ class DictionaryListView(LoginRequiredMixin, generic.ListView):
             else:
                 language = '2'
             self.request.session['lang'] = language
-        self.request.session['dict_count'] = c
+        self.request.session['dict_count'] = Dictionary.objects.filter(user=self.request.user).filter(language__exact=language).count()
         # возможно стоит перенести в ChooseTrenning?
         self.request.session['dictionary'] = my_serializer(Dictionary.objects.filter(user=self.request.user).filter(language__exact=language))
         print("Язык: ", self.request.session['lang'])
@@ -346,18 +362,22 @@ class DictionaryDelete(LoginRequiredMixin, generic.DeleteView):
 class UserProfileView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'user_profile.html'
 
-    def get(self, request, *args, **kwargs):
-        context = {'name': self.request.user}
-        return render(request, self.template_name, context=context)
 
+######################API#########################################################
 
 class DictionaryAPIViewSet(viewsets.ModelViewSet):
-    queryset = Dictionary.objects.all()
+    # queryset = Dictionary.objects.all()
     serializer_class = DictionarySerializer
     permission_classes = (IsAuthenticated,)
 
+    # def get_queryset(self):
+    #     return Dictionary.objects.filter(user=self.request.user)
+
     def get_queryset(self):
-        return Dictionary.objects.filter(user=self.request.user)
+        pk = self.kwargs.get('pk')
+        if not pk:
+            return Dictionary.objects.filter(user=self.request.user)
+        return Dictionary.objects.filter(pk=pk)
 
 class DictionaryCountAPIView(views.APIView):
     permission_classes = (IsAuthenticated,)

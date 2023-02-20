@@ -4,8 +4,8 @@ from rest_framework import routers
 from . import views
 from .views import DictionaryAPIViewSet
 
-router = routers.SimpleRouter()
-router.register('dictionary', DictionaryAPIViewSet)
+# router = routers.SimpleRouter()
+# router.register('dictionary', DictionaryAPIViewSet)
 
 
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     path('login', views.LoginUser.as_view(), name='login'),
     path('logout', views.logout_user, name='logout'),
     path('register', views.RegisterUser.as_view(), name='register'),
+    path('change_user_data/<int:pk>', views.ChangeUser.as_view(), name='change_user_data'),
     path('dictionary/<str:lang>', views.DictionaryListView.as_view(), name='dictionary_list'),
     path('dictionary', views.DictionaryListView.as_view(), name='dictionary_list'),
     path('dictionary_detail/<int:pk>', views.DictionaryDetailView.as_view(), name='dictionary-detail'),
@@ -33,7 +34,4 @@ urlpatterns = [
     path('result_pdf', views.result_pdf, name='result_pdf'),
     path('cards', views.Cards.as_view(), name='cards'),
     path('profile', views.UserProfileView.as_view(), name='profile'),
-    path('api/v1/drf-auth/', include('rest_framework.urls')),
-    path('api/v1/', include(router.urls)),
-    path('api/v1/dictionary_count/', views.DictionaryCountAPIView.as_view()),
 ]

@@ -15,8 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+
+from trainer.views import *
+
+router = routers.SimpleRouter()
+router.register('dictionary', DictionaryAPIViewSet, basename='dictionary_api')
 
 urlpatterns = [
     path('', include('trainer.urls')),
     path('admin/', admin.site.urls),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
+    path('api/v1/', include(router.urls)),
+    path('api/v1/dictionary_count/', DictionaryCountAPIView.as_view()),
 ]

@@ -39,9 +39,9 @@
 <div class="container">
     <div class="d-grid gap-2 d-md-block">
         {% if request.session.lang == '1' %}
-        <a class="btn btn-primary" href="{% url 'dictionary_list' '1' %}" role="button">К словарю</a>
+        <a class="btn btn-primary" href="{% url 'dictionary_list' 'eng' %}" role="button">К словарю</a>
         {% else %}
-        <a class="btn btn-primary" href="{% url 'dictionary_list' '2' %}" role="button">К словарю</a>
+        <a class="btn btn-primary" href="{% url 'dictionary_list' 'de' %}" role="button">К словарю</a>
         {% endif %}
         <a class="btn btn-primary" href="{% url 'result_pdf' %}" role="button">Получить результат в PDF</a>
     </div>

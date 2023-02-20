@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -20,6 +20,28 @@ class RegisterUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+class ChangeUserData(UserChangeForm):
+    username = forms.CharField(label="Логин", widget=forms.TextInput(attrs={'class': 'form-input'}))
+    email = forms.EmailField(label="Электронная почта", widget=forms.EmailInput(attrs={'class': 'form-input'}))
+    first_name = forms.CharField(label="Имя", widget=forms.TextInput(attrs={'class': 'form-input'}))
+    last_name = forms.CharField(label="Фамилия", widget=forms.TextInput(attrs={'class': 'form-input'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')
+
+
+# class ChangeUserData(forms.ModelForm):
+#     username = forms.CharField(label="Логин", widget=forms.TextInput(attrs={'class': 'form-input'}))
+#     email = forms.EmailField(label="Электронная почта", widget=forms.EmailInput(attrs={'class': 'form-input'}))
+#     first_name = forms.CharField(label="Имя", widget=forms.TextInput(attrs={'class': 'form-input'}))
+#     last_name = forms.CharField(label="Фамилия", widget=forms.TextInput(attrs={'class': 'form-input'}))
+#
+#     class Meta:
+#         model = User
+#         fields = ('username', 'email', 'first_name', 'last_name')
 
 
 class DictionaryEngModelForm(forms.ModelForm):
@@ -89,6 +111,7 @@ class GetAnswersForm(forms.Form):
 
 class SearchForm(forms.Form):
     search = forms.CharField(label='', required=True) #, widget=forms.TextInput(attrs={'class': 'form-control me-2'}))
+
 
 
 

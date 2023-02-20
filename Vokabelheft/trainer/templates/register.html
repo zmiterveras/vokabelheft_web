@@ -3,7 +3,12 @@
 {% block content %}
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
+  {% for field in form %}
+  <p>
+    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}: </label>  {{ field }}
+  </p>
+  <div class="text-danger"> {{ field.errors }}</div>
+  {% endfor %}
 
   <button type="submit" class="btn btn-primary">Зарегистрировать</button>
 

@@ -2,8 +2,40 @@
 
 {% block content %}
 <h1 class="text-danger">В разработке</h1>
-<p>{{ name }}</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Логин:</th>
+        <th scope="col">{{ user.username }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">Имя:</th>
+        <td>{{ user.first_name }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Фамилия:</th>
+        <td>{{ user.last_name }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Электронная почта:</th>
+        <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Последний вход:</th>
+        <td>{{ user.last_login }}</td>
+    </tr>
+    <tr>
+        <th scope="row">Дата регистрации:</th>
+        <td>{{ user.date_joined }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"><a class="btn btn-primary" href="/change_user_data/{{ user.id }}" role="button">Изменить</a></td>
+    </tr>
 
+    </tbody>
+</table>
 {% endblock %}
 
 {% block mode %}
